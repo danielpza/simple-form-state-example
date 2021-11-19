@@ -1,25 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { createStateHandler } from "./state-handler";
+import React from "react";
+
+const [StateContext, useState, withState] = createStateHandler<{
+  firstName: string;
+  lastName: string;
+  range: {
+    start: number;
+    end: number;
+  };
+}>();
+
+const TextField = withState("input");
+
+function Form() {
+  return (
+    <>
+      <TextField statePath="firstName" />
+      <TextField statePath="lastName" />
+      <TextField statePath="range.start" />
+      <TextField statePath="range.end" />
+    </>
+  );
+}
 
 function App() {
+  const [state, onChange] = useState({
+    firstName: "",
+    lastName: "",
+    range: {
+      start: 0,
+      end: 0,
+    },
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <StateContext.Provider value={{ state, onChange }}>
+        <Form />
+      </StateContext.Provider>
+      <pre>{JSON.stringify(state, null, 2)}</pre>
+    </>
   );
 }
 
