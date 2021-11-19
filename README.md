@@ -1,4 +1,4 @@
-# Form helper example
+# Form helper example (similar to formik)
 
 How to use:
 
